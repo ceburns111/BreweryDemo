@@ -17,7 +17,7 @@ const router = createRouter({
       component: BreweriesView,
     },
     {
-      path: "/brewery",
+      path: "/brewery/:id",
       name: "brewery",
       component: BreweryView,
     },

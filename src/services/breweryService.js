@@ -19,5 +19,7 @@ async function getBreweries() {
   if (!breweriesResponse.data) {
     return;
   }
-  breweriesSubject.next(breweriesResponse.data);
+  const breweries = breweriesResponse.data;
+  breweriesSubject.next(breweries);
+  return breweries;
 }

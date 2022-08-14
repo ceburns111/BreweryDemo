@@ -1,28 +1,32 @@
 <script>
 import { breweryService } from "../services/breweryService";
-import { ref, onMounted } from "vue";
-
 export default {
   name: "BreweriesView",
-  setup() {
-    const breweries = ref([]);
-    onMounted(async () => {
-      await breweryService.getBreweries();
-      breweries.value = breweryService.breweriesValue;
-    });
-    return { breweries };
+  data() {
+    return {
+      breweryList: [],
+      columns: [
+        { field: "name", header: "Name" },
+        { field: "street", header: "Address" },
+        { field: "city", header: "City" },
+        { field: "state", header: "State"},
+        { field: "postal_code", header: "Zip Code" },
+        { field: "website_url", header: "Website" },
+        { field: "id", header: "Id" },
+      ],
+    };
+  },
+  async mounted() {
+    this.breweryList = await breweryService.getBreweries();
   },
 };
 </script>
 
 <template>
   <h1>Breweries</h1>
-  <PvDataTable :value="breweries">
-    <PvColumn field="name" header="Name"></PvColumn>
-    <PvColumn field="street" header="Address"></PvColumn>
-    <PvColumn field="city" header="City"></PvColumn>
-    <PvColumn field="state" header="State"></PvColumn>
-    <PvColumn field="postal_code" header="Zip"></PvColumn>
-    <PvColumn field="website_url" header="Website"></PvColumn>
-  </PvDataTable>
+  <div>
+  <PvDataTable :value="breweryList" responsiveLayout="scroll">
+    <PvColumn v-for="col in columns" :field="col.field" :header="col.header" :key="col.field"></PvColumn>
+    </PvDataTable>
+  </div>
 </template>
