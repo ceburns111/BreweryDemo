@@ -21,14 +21,14 @@ export default {
 </script>
 
 <template>
-  <div>
     <PvCard>
       <template #title>{{ brewery.name }}</template>
-      <template #subtitle>{{ brewery.state + " " + brewery.postal_code}}</template>
+      <template #subtitle>{{
+        brewery.state + " " + brewery.postal_code
+      }}</template>
       <template #content>
         <a v-bind:href="brewery.website_url">Website</a>
       </template>
       <template #footer></template>
     </PvCard>
-  </div>
 </template>
