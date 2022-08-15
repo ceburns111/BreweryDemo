@@ -24,7 +24,6 @@ export default {
   methods: {
     navTo(breweryId) {
       console.log("navigating to brewery page...")
-      console.log(`brewery id: ${breweryId}`)
       this.$router.push({ name: "brewery", params: { id: breweryId } });
     },
   },
