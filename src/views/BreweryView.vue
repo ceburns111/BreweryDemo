@@ -23,20 +23,24 @@ export default {
           },
         },
       ],
+      defaultZoom: 15,
     };
   },
   async created() {
     const route = useRoute();
     const breweryId = route.params.id;
-    console.log(`brewery id: ${breweryId}`);
     const breweryResult = await breweryService.getBreweryById(breweryId);
+
     this.brewery.name = breweryResult.name;
     this.brewery.street = breweryResult.street;
-    console.log(`street: ${breweryResult.street}`);
     this.brewery.city = breweryResult.city;
     this.brewery.state = breweryResult.state;
     this.brewery.zip = breweryResult.postal_code;
     this.brewery.url = breweryResult.website_url;
+
+    if ((this.brewery.street == "") | (this.brewery.street == null)) {
+      this.defaultZoom = 10;
+    }
 
     const address =
       breweryResult.street +
@@ -48,15 +52,8 @@ export default {
       breweryResult.zip;
 
     const coordinates = await mapService.getCoordinates(address);
-    console.log(
-      `Lat: ${JSON.stringify(coordinates.results[0].geometry.location.lat)}`
-    );
-    console.log(
-      `Lng: ${JSON.stringify(coordinates.results[0].geometry.location.lng)}`
-    );
-
     this.center.lat = coordinates.results[0].geometry.location.lat;
-    this.center.lng = coordinates.results[0].geometry.location.lng
+    this.center.lng = coordinates.results[0].geometry.location.lng;
     this.markers.position.lat = this.center.lat;
     this.markers.position.lng = this.center.lng;
   },
@@ -66,17 +63,18 @@ export default {
 <template>
   <PvCard>
     <template #title>{{ brewery.name }}</template>
-    <!-- <template #>{{ brewery.state + " " + brewery.zip }}</template> -->
     <template #content>
       <div>{{ brewery.street }}</div>
       <div>{{ brewery.city + " " + brewery.state + " " + brewery.zip }}</div>
     </template>
-    <template v-if="brewery.url != null" #footer> <a v-bind:href="brewery.url">Website</a></template>
+    <template v-if="brewery.url != null" #footer>
+      <a v-bind:href="brewery.url">Website</a></template
+    >
   </PvCard>
   <div>
     <GMapMap
       :center="center"
-      :zoom="7"
+      :zoom="defaultZoom"
       map-type-id="roadmap"
       style="width: 500px; height: 300px"
     >
