@@ -16,7 +16,6 @@ export default {
       { field: "city", header: "City" },
       { field: "state", header: "State"},
       { field: "postal_code", header: "Zip Code" },
-     // { field: "website_url", header: "Website" },
     ];
     this.breweryList = await breweryService.getBreweries();
   },
@@ -42,7 +41,9 @@ export default {
       ></PvColumn>
       <PvColumn>
         <template #body="slotProps">
-          <a v-bind:href="slotProps.data.website_url">{{slotProps.data.website_url}}</a>
+          <a v-bind:href="slotProps.data.website_url">{{
+            slotProps.data.website_url
+          }}</a>
         </template>
       </PvColumn>
       <PvColumn>
