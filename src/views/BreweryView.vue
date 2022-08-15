@@ -30,7 +30,7 @@ export default {
     const route = useRoute();
     const breweryId = route.params.id;
     const breweryResult = await breweryService.getBreweryById(breweryId);
-    
+
     this.brewery.name = breweryResult.name;
     this.brewery.street = breweryResult.street;
     this.brewery.city = breweryResult.city;
