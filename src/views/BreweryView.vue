@@ -6,7 +6,12 @@ export default {
   name: "BreweryView",
   data() {
     return {
-      brewery: null,
+      brewery: {
+        name: "",
+        state: "",
+        zip: "",
+        url: null,
+      },
     };
   },
   async created() {
@@ -15,20 +20,21 @@ export default {
     console.log(`brewery id: ${breweryId}`);
 
     const breweryResult = await breweryService.getBreweryById(breweryId);
-    this.brewery = breweryResult;
+    this.brewery.name = breweryResult.name;
+    this.brewery.state = breweryResult.state;
+    this.brewery.zip = breweryResult.postal_code;
+    this.brewery.url = breweryResult.website_url;
   },
 };
 </script>
 
 <template>
-    <PvCard>
-      <template #title>{{ brewery.name }}</template>
-      <template #subtitle>{{
-        brewery.state + " " + brewery.postal_code
-      }}</template>
-      <template #content>
-        <a v-bind:href="brewery.website_url">Website</a>
-      </template>
-      <template #footer></template>
-    </PvCard>
+  <PvCard>
+    <template #title>{{ brewery.name }}</template>
+    <template #subtitle>{{ brewery.state + " " + brewery.zip }}</template>
+    <template v-if="brewery.url != null" #content>
+      <a v-bind:href="brewery.url">Website</a>
+    </template>
+    <template #footer></template>
+  </PvCard>
 </template>
