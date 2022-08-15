@@ -13,6 +13,7 @@ import "primevue/resources/themes/arya-blue/theme.css";
 import "./assets/main.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
+import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 import App from "./App.vue";
 import router from "./router";
@@ -31,4 +32,9 @@ app.component("PvDropdown", Dropdown);
 app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
+app.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyBiW6JjserHXkmD27zDB8eRB-DP_X44Gfo",
+  },
+});
 app.mount("#app");

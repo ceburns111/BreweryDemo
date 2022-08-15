@@ -1,30 +1,29 @@
 <script>
 import { breweryService } from "../services/breweryService";
-///import { RouterLink } from "vue-router";
 
 export default {
   name: "BreweriesView",
   data() {
     return {
       breweryList: [],
-      columns: [
-        { field: "name", header: "Name" },
-        { field: "street", header: "Address" },
-        { field: "city", header: "City" },
-        { field: "state", header: "State"},
-        { field: "postal_code", header: "Zip Code" },
-        { field: "website_url", header: "Website" },
-        { field: "id", header: "Id" },
-      ],
+      columns: null,
     };
   },
   async mounted() {
+    this.columns = [
+      { field: "name", header: "Name" },
+      { field: "street", header: "Address" },
+      { field: "city", header: "City" },
+      { field: "state", header: "State"},
+      { field: "postal_code", header: "Zip Code" },
+    ];
     this.breweryList = await breweryService.getBreweries();
   },
   methods: {
-    navTo(breweryId) {
+    async navTo(breweryId) {
       console.log("navigating to brewery page...")
-      this.$router.push({ name: "brewery", params: { id: breweryId } });
+      console.log(`brewery id: ${breweryId}`);
+      await this.$router.push({ name: "brewery", params: { id: breweryId } });
     },
   },
 };
@@ -40,6 +39,13 @@ export default {
         :header="col.header"
         :key="col.field"
       ></PvColumn>
+      <PvColumn>
+        <template #body="slotProps">
+          <a v-bind:href="slotProps.data.website_url">{{
+            slotProps.data.website_url
+          }}</a>
+        </template>
+      </PvColumn>
       <PvColumn>
         <template #body="slotProps">
           <PvButton
